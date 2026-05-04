@@ -152,7 +152,6 @@ const Navbar: React.FC = () => {
                       color: 'var(--text-color)',
                     }}
                   >
-                    <span style={{ color: 'var(--primary-color)', fontSize: '1rem', marginRight: '1rem' }}>0{i+1}</span>
                     {link.name}
                   </motion.a>
                 ))}
