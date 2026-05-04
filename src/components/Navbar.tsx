@@ -1,10 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, LogOut } from 'lucide-react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { user, logout } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -14,12 +19,27 @@ const Navbar: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const isHomePage = location.pathname === '/';
+
   const navLinks = [
-    { name: 'Home', href: '#hero' },
-    { name: 'Work', href: '#projects' },
-    { name: 'About', href: '#about' },
-    { name: 'Contact', href: '#contact' },
+    { name: 'Home', href: isHomePage ? '#hero' : '/' },
+    { name: 'Work', href: isHomePage ? '#projects' : '/#projects' },
+    { name: 'Blog', href: '/blog' },
+    { name: 'Contact', href: isHomePage ? '#contact' : '/#contact' },
   ];
+
+  const handleNavClick = (href: string) => {
+    setIsOpen(false);
+    if (href.startsWith('#') && isHomePage) {
+      // Smooth scroll handled by CSS
+    } else if (href.startsWith('/#') && !isHomePage) {
+      navigate(href.replace('/#', '/'));
+      setTimeout(() => {
+        const id = href.split('#')[1];
+        document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    }
+  };
 
   return (
     <>
@@ -46,10 +66,32 @@ const Navbar: React.FC = () => {
             }}
           >
             {navLinks.map((link) => (
-              <a key={link.name} href={link.href} className="glass-hover" style={{ fontWeight: 500 }}>
-                {link.name}
-              </a>
+              link.href.startsWith('#') || (link.href.startsWith('/#') && !isHomePage) ? (
+                <a 
+                  key={link.name} 
+                  href={link.href} 
+                  onClick={() => handleNavClick(link.href)}
+                  className="glass-hover" 
+                  style={{ fontWeight: 500 }}
+                >
+                  {link.name}
+                </a>
+              ) : (
+                <Link 
+                  key={link.name} 
+                  to={link.href} 
+                  className="glass-hover" 
+                  style={{ fontWeight: 500 }}
+                >
+                  {link.name}
+                </Link>
+              )
             ))}
+            {user && (
+              <Link to="/admin" className="glass-hover" style={{ fontWeight: 700, color: 'var(--primary-color)' }}>
+                Admin
+              </Link>
+            )}
           </motion.nav>
         )}
       </AnimatePresence>
@@ -139,23 +181,83 @@ const Navbar: React.FC = () => {
               </button>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
                 {navLinks.map((link, i) => (
-                  <motion.a
-                    key={link.name}
-                    href={link.href}
-                    onClick={() => setIsOpen(false)}
+                   link.href.startsWith('#') || (link.href.startsWith('/#') && !isHomePage) ? (
+                    <motion.a
+                      key={link.name}
+                      href={link.href}
+                      onClick={() => handleNavClick(link.href)}
+                      initial={{ x: 20, opacity: 0 }}
+                      animate={{ x: 0, opacity: 1 }}
+                      transition={{ delay: i * 0.1 }}
+                      style={{
+                        fontSize: '2rem',
+                        fontWeight: 700,
+                        color: 'var(--text-color)',
+                      }}
+                    >
+                      {link.name}
+                    </motion.a>
+                  ) : (
+                    <motion.div
+                      key={link.name}
+                      initial={{ x: 20, opacity: 0 }}
+                      animate={{ x: 0, opacity: 1 }}
+                      transition={{ delay: i * 0.1 }}
+                    >
+                      <Link
+                        to={link.href}
+                        onClick={() => setIsOpen(false)}
+                        style={{
+                          fontSize: '2rem',
+                          fontWeight: 700,
+                          color: 'var(--text-color)',
+                        }}
+                      >
+                        {link.name}
+                      </Link>
+                    </motion.div>
+                  )
+                ))}
+                {user && (
+                  <motion.div
                     initial={{ x: 20, opacity: 0 }}
                     animate={{ x: 0, opacity: 1 }}
-                    transition={{ delay: i * 0.1 }}
-                    style={{
-                      fontSize: '2rem',
-                      fontWeight: 700,
-                      color: 'var(--text-color)',
-                    }}
+                    transition={{ delay: navLinks.length * 0.1 }}
                   >
-                    {link.name}
-                  </motion.a>
-                ))}
+                    <Link
+                      to="/admin"
+                      onClick={() => setIsOpen(false)}
+                      style={{
+                        fontSize: '2rem',
+                        fontWeight: 700,
+                        color: 'var(--primary-color)',
+                      }}
+                    >
+                      Dashboard
+                    </Link>
+                  </motion.div>
+                )}
               </div>
+              
+              {user && (
+                <button
+                  onClick={() => { logout(); setIsOpen(false); }}
+                  style={{
+                    marginTop: 'auto',
+                    background: 'none',
+                    border: 'none',
+                    color: '#ef4444',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    fontSize: '1.25rem',
+                    fontWeight: 600,
+                    cursor: 'pointer'
+                  }}
+                >
+                  <LogOut size={20} /> Logout
+                </button>
+              )}
             </motion.aside>
           </>
         )}
