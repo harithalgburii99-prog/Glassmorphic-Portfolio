@@ -22,25 +22,27 @@ const MONGODB_URI = process.env.MONGODB_URI;
 if (MONGODB_URI) {
   mongoose.connect(MONGODB_URI)
     .then(() => console.log('Connected to MongoDB'))
-    .catch(err => console.error('MongoDB connection error:', err));
-} else {
-  console.warn('MONGODB_URI not found in .env. API routes will not work correctly.');
+    .catch(err => {
+      console.error('MongoDB connection error:', err);
+    });
 }
 
 // Middleware
 app.use(cors());
 app.use(express.json());
+// Serve static files from 'dist' ONLY if it exists (Vercel handles this usually)
 app.use(express.static(path.join(__dirname, 'dist')));
 
 // API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/posts', postRoutes);
 
+// Export for Vercel
+export default app;
+
 // For local development
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV !== 'production' && process.env.VERCEL !== '1') {
   app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
   });
 }
-
-export default app;
