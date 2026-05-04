@@ -24,8 +24,10 @@ const Login: React.FC = () => {
       navigate('/admin');
     } catch (error: unknown) {
       let errorMessage = 'Login failed';
-      if (axios.isAxiosError(error) && error.response?.data?.message) {
-        errorMessage = error.response.data.message;
+      if (axios.isAxiosError(error) && error.response?.data) {
+        errorMessage = error.response.data.details 
+          ? `${error.response.data.message}: ${error.response.data.details}` 
+          : error.response.data.message || 'Login failed';
       }
       setError(errorMessage);
     } finally {

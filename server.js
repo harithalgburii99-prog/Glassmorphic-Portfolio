@@ -19,12 +19,16 @@ const PORT = process.env.PORT || 3000;
 
 // Connect to MongoDB
 const MONGODB_URI = process.env.MONGODB_URI;
+console.log('MONGODB_URI present:', !!MONGODB_URI);
+
 if (MONGODB_URI) {
   mongoose.connect(MONGODB_URI)
     .then(() => console.log('Connected to MongoDB'))
     .catch(err => {
       console.error('MongoDB connection error:', err);
     });
+} else {
+  console.error('FATAL ERROR: MONGODB_URI is not defined in environment variables!');
 }
 
 // Middleware
