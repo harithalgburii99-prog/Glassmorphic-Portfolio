@@ -87,9 +87,13 @@ const Navbar: React.FC = () => {
                 </Link>
               )
             ))}
-            {user && (
+            {user ? (
               <Link to="/admin" className="glass-hover" style={{ fontWeight: 700, color: 'var(--primary-color)' }}>
                 Admin
+              </Link>
+            ) : (
+              <Link to="/login" className="glass-hover" style={{ fontSize: '0.875rem', opacity: 0.5 }}>
+                Login
               </Link>
             )}
           </motion.nav>
