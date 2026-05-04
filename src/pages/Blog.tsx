@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { postService } from '../services/api';
+import { postService, Post } from '../services/api';
 import { Calendar, Tag, ChevronRight } from 'lucide-react';
 
 const Blog: React.FC = () => {
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

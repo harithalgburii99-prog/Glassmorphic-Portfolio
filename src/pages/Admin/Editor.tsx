@@ -6,7 +6,7 @@ import { useAuth } from '../../context/AuthContext';
 import { Save, ArrowLeft, Eye, EyeOff } from 'lucide-react';
 
 const Editor: React.FC = () => {
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { user, loading: authLoading } = useAuth();
   const [loading, setLoading] = useState(!!id);

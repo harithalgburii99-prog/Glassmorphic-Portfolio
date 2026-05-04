@@ -14,35 +14,46 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
+export interface Post {
+  _id: string;
+  title: string;
+  content: string;
+  excerpt?: string;
+  tags?: string[];
+  published: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export const authService = {
-  login: async (credentials) => {
+  login: async (credentials: any) => {
     const response = await api.post('/auth/login', credentials);
     return response.data;
   },
 };
 
 export const postService = {
-  getPosts: async () => {
+  getPosts: async (): Promise<Post[]> => {
     const response = await api.get('/posts');
     return response.data;
   },
-  getAdminPosts: async () => {
+  getAdminPosts: async (): Promise<Post[]> => {
     const response = await api.get('/posts/admin');
     return response.data;
   },
-  getPost: async (id) => {
+  getPost: async (id: string): Promise<Post> => {
     const response = await api.get(`/posts/${id}`);
     return response.data;
   },
-  createPost: async (postData) => {
+  createPost: async (postData: any): Promise<Post> => {
     const response = await api.post('/posts', postData);
     return response.data;
   },
-  updatePost: async (id, postData) => {
+  updatePost: async (id: string, postData: any): Promise<Post> => {
     const response = await api.put(`/posts/${id}`, postData);
     return response.data;
   },
-  deletePost: async (id) => {
+  deletePost: async (id: string): Promise<{ message: string }> => {
     const response = await api.delete(`/posts/${id}`);
     return response.data;
   },

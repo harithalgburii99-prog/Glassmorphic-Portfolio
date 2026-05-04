@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { postService } from '../services/api';
+import { postService, Post } from '../services/api';
 import { Calendar, Tag, ArrowLeft } from 'lucide-react';
 
 const BlogPost: React.FC = () => {
-  const { id } = useParams();
-  const [post, setPost] = useState(null);
+  const { id } = useParams<{ id: string }>();
+  const [post, setPost] = useState<Post | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchPost = async () => {
+      if (!id) return;
       try {
         const data = await postService.getPost(id);
         setPost(data);

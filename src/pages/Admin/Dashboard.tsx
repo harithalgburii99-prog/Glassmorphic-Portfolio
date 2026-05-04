@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { postService } from '../../services/api';
+import { postService, Post } from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
 import { Edit, Trash2, Plus, LogOut, ExternalLink, Eye, EyeOff } from 'lucide-react';
 
 const Dashboard: React.FC = () => {
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
   const { user, logout, loading: authLoading } = useAuth();
   const navigate = useNavigate();
@@ -44,7 +43,7 @@ const Dashboard: React.FC = () => {
     }
   };
 
-  const handleTogglePublish = async (post: any) => {
+  const handleTogglePublish = async (post: Post) => {
     try {
       const updated = await postService.updatePost(post._id, { published: !post.published });
       setPosts(posts.map(p => p._id === post._id ? updated : p));
