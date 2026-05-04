@@ -26,7 +26,7 @@ export interface Post {
 }
 
 export const authService = {
-  login: async (credentials: any) => {
+  login: async (credentials: Record<string, string>) => {
     const response = await api.post('/auth/login', credentials);
     return response.data;
   },
@@ -45,11 +45,11 @@ export const postService = {
     const response = await api.get(`/posts/${id}`);
     return response.data;
   },
-  createPost: async (postData: any): Promise<Post> => {
+  createPost: async (postData: Partial<Post>): Promise<Post> => {
     const response = await api.post('/posts', postData);
     return response.data;
   },
-  updatePost: async (id: string, postData: any): Promise<Post> => {
+  updatePost: async (id: string, postData: Partial<Post>): Promise<Post> => {
     const response = await api.put(`/posts/${id}`, postData);
     return response.data;
   },

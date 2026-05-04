@@ -1,31 +1,25 @@
-import { createContext, useState, useContext, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import type { ReactNode } from 'react';
-
-interface User {
-  id: string;
-  username: string;
-}
-
-interface AuthContextType {
-  user: User | null;
-  login: (userData: User, token: string) => void;
-  logout: () => void;
-  loading: boolean;
-}
-
-const AuthContext = createContext<AuthContextType | null>(null);
+import { AuthContext } from './AuthContextTypes';
+import type { User } from './AuthContextTypes';
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
+  const [user, setUser] = useState<User | null>(() => {
     const storedUser = localStorage.getItem('user');
     const token = localStorage.getItem('token');
     if (storedUser && token) {
-      setUser(JSON.parse(storedUser));
+      try {
+        return JSON.parse(storedUser);
+      } catch {
+        return null;
+      }
     }
-    setLoading(false);
+    return null;
+  });
+  const [loading] = useState(false);
+
+  useEffect(() => {
+    // Initial load is now handled in useState initializer
   }, []);
 
   const login = (userData: User, token: string) => {
@@ -45,12 +39,4 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       {children}
     </AuthContext.Provider>
   );
-};
-
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
 };

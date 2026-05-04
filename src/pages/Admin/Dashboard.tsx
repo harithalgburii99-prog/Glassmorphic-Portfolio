@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { postService, Post } from '../../services/api';
-import { useAuth } from '../../context/AuthContext';
+import { postService } from '../../services/api';
+import type { Post } from '../../services/api';
+import { useAuth } from '../../hooks/useAuth';
 import { Edit, Trash2, Plus, LogOut, ExternalLink, Eye, EyeOff } from 'lucide-react';
 
 const Dashboard: React.FC = () => {
@@ -22,8 +23,8 @@ const Dashboard: React.FC = () => {
         try {
           const data = await postService.getAdminPosts();
           setPosts(data);
-        } catch (err) {
-          console.error('Failed to fetch admin posts:', err);
+        } catch (error) {
+          console.error('Failed to fetch admin posts:', error);
         } finally {
           setLoading(false);
         }
@@ -37,7 +38,8 @@ const Dashboard: React.FC = () => {
       try {
         await postService.deletePost(id);
         setPosts(posts.filter(p => p._id !== id));
-      } catch (err) {
+      } catch (error) {
+        console.error('Failed to delete post:', error);
         alert('Failed to delete post');
       }
     }
@@ -47,7 +49,8 @@ const Dashboard: React.FC = () => {
     try {
       const updated = await postService.updatePost(post._id, { published: !post.published });
       setPosts(posts.map(p => p._id === post._id ? updated : p));
-    } catch (err) {
+    } catch (error) {
+      console.error('Failed to update post:', error);
       alert('Failed to update post');
     }
   };

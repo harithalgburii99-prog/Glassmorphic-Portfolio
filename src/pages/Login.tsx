@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import axios from 'axios';
 import { authService } from '../services/api';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../hooks/useAuth';
 import { Lock, User, LogIn } from 'lucide-react';
 
 const Login: React.FC = () => {
@@ -21,8 +22,12 @@ const Login: React.FC = () => {
       const data = await authService.login({ username, password });
       login(data.user, data.token);
       navigate('/admin');
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Login failed');
+    } catch (error: unknown) {
+      let errorMessage = 'Login failed';
+      if (axios.isAxiosError(error) && error.response?.data?.message) {
+        errorMessage = error.response.data.message;
+      }
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }

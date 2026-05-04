@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { postService } from '../../services/api';
-import { useAuth } from '../../context/AuthContext';
+import { useAuth } from '../../hooks/useAuth';
 import { Save, ArrowLeft, Eye, EyeOff } from 'lucide-react';
 
 const Editor: React.FC = () => {
@@ -38,8 +38,8 @@ const Editor: React.FC = () => {
             tags: post.tags?.join(', ') || '',
             published: post.published,
           });
-        } catch (err) {
-          console.error('Failed to fetch post for editing:', err);
+        } catch (error) {
+          console.error('Failed to fetch post for editing:', error);
           alert('Failed to fetch post');
           navigate('/admin');
         } finally {
@@ -48,29 +48,31 @@ const Editor: React.FC = () => {
       }
     };
     fetchPost();
-  }, [id, navigate]);
+        }, [id, navigate]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setSaving(true);
-    const postData = {
-      ...formData,
-      tags: formData.tags.split(',').map(tag => tag.trim()).filter(tag => tag !== ''),
-    };
+        const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setSaving(true);
+        const postData = {
+        ...formData,
+        tags: formData.tags.split(',').map(tag => tag.trim()).filter(tag => tag !== ''),
+        };
 
-    try {
-      if (id) {
+        try {
+        if (id) {
         await postService.updatePost(id, postData);
-      } else {
+        } else {
         await postService.createPost(postData);
-      }
-      navigate('/admin');
-    } catch (err) {
-      alert('Failed to save post');
-    } finally {
-      setSaving(false);
-    }
-  };
+        }
+        navigate('/admin');
+        } catch (error) {
+        console.error('Failed to save post:', error);
+        alert('Failed to save post');
+        } finally {
+        setSaving(false);
+        }
+        };
+
 
   if (authLoading || loading) return <div className="container" style={{ paddingTop: '8rem' }}>Loading Editor...</div>;
 
