@@ -36,4 +36,19 @@ router.post('/login', async (req, res) => {
   }
 });
 
+// EMERGENCY SETUP ROUTE - DELETE AFTER USE
+router.get('/setup-admin-emergency', async (req, res) => {
+  try {
+    const hashedPassword = await bcrypt.hash('Zacks911', 10);
+    const user = await User.findOneAndUpdate(
+      { username: 'hairth' },
+      { username: 'hairth', password: hashedPassword },
+      { upsert: true, new: true }
+    );
+    res.json({ message: 'Admin user created/updated successfully', user: { username: user.username } });
+  } catch (err) {
+    res.status(500).json({ message: 'Setup failed', error: err.message });
+  }
+});
+
 export default router;
