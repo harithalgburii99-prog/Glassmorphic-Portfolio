@@ -19,17 +19,23 @@ const PORT = process.env.PORT || 3000;
 
 // Connect to MongoDB
 const MONGODB_URI = process.env.MONGODB_URI;
-console.log('MONGODB_URI present:', !!MONGODB_URI);
 
-if (MONGODB_URI) {
-  mongoose.connect(MONGODB_URI)
-    .then(() => console.log('Connected to MongoDB'))
-    .catch(err => {
-      console.error('MongoDB connection error:', err);
-    });
-} else {
-  console.error('FATAL ERROR: MONGODB_URI is not defined in environment variables!');
-}
+let isConnected = false;
+export const connectDB = async () => {
+  if (isConnected) return;
+  if (!MONGODB_URI) {
+    throw new Error('MONGODB_URI is not defined');
+  }
+
+  try {
+    const db = await mongoose.connect(MONGODB_URI);
+    isConnected = db.connections[0].readyState === 1;
+    console.log('Connected to MongoDB');
+  } catch (err) {
+    console.error('MongoDB connection error:', err);
+    throw err;
+  }
+};
 
 // Middleware
 app.use(cors());
