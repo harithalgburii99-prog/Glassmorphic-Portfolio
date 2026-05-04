@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { postService, Post } from '../services/api';
+import { postService } from '../services/api';
+import type { Post } from '../services/api';
 import { Calendar, Tag, ArrowLeft } from 'lucide-react';
 
 const BlogPost: React.FC = () => {
