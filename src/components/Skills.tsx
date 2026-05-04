@@ -13,10 +13,10 @@ const skills = [
 
 const Skills: React.FC = () => {
   return (
-    <section id="about" style={{ padding: '10vh 10%', position: 'relative' }}>
-      <div style={{ marginBottom: '4rem' }}>
-        <h2 style={{ fontSize: '3rem', marginBottom: '1rem' }}>Expertise</h2>
-        <p style={{ maxWidth: '600px', opacity: 0.7 }}>
+    <section id="about" style={{ padding: '10vh 5%', position: 'relative' }}>
+      <div style={{ marginBottom: '4rem', maxWidth: '1200px', margin: '0 auto 4rem auto' }}>
+        <h2 style={{ fontSize: 'clamp(2rem, 8vw, 3rem)', marginBottom: '1rem' }}>Expertise</h2>
+        <p style={{ maxWidth: '600px', opacity: 0.7, fontSize: 'clamp(1rem, 2vw, 1.1rem)' }}>
           Building robust and scalable solutions with a modern tech stack. 
           Focusing on maintainable code and exceptional user experiences.
         </p>
@@ -25,8 +25,10 @@ const Skills: React.FC = () => {
       <div 
         style={{ 
           display: 'grid', 
-          gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', 
-          gap: '2rem' 
+          gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))', 
+          gap: '1.5rem',
+          maxWidth: '1200px',
+          margin: '0 auto'
         }}
       >
         {skills.map((skill, index) => (

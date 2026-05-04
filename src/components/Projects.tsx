@@ -33,11 +33,11 @@ const ProjectCard: React.FC<{ project: Project; index: number }> = ({ project, i
   return (
     <div 
       style={{ 
-        height: '100vh', 
+        minHeight: '100vh', 
         display: 'flex', 
         alignItems: 'center', 
         justifyContent: 'center',
-        padding: '0 10%'
+        padding: '10vh 5%'
       }}
     >
       <motion.div 
@@ -47,9 +47,9 @@ const ProjectCard: React.FC<{ project: Project; index: number }> = ({ project, i
         className="glass"
         style={{ 
           display: 'grid', 
-          gridTemplateColumns: '1fr 1fr', 
-          gap: '4rem', 
-          padding: '4rem',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 400px), 1fr))', 
+          gap: '2rem', 
+          padding: 'clamp(1.5rem, 5vw, 4rem)',
           maxWidth: '1200px',
           width: '100%'
         }}
@@ -58,8 +58,8 @@ const ProjectCard: React.FC<{ project: Project; index: number }> = ({ project, i
           <span style={{ color: project.color, fontWeight: 600, textTransform: 'uppercase', fontSize: '0.8rem' }}>
             {project.category}
           </span>
-          <h2 style={{ fontSize: '4rem', margin: '1rem 0' }}>{project.title}</h2>
-          <p style={{ fontSize: '1.2rem', opacity: 0.7, marginBottom: '2rem' }}>{project.description}</p>
+          <h2 style={{ fontSize: 'clamp(2rem, 8vw, 4rem)', margin: '1rem 0' }}>{project.title}</h2>
+          <p style={{ fontSize: 'clamp(1rem, 2vw, 1.2rem)', opacity: 0.7, marginBottom: '2rem' }}>{project.description}</p>
           <button 
             className="glass glass-hover" 
             style={{ 
@@ -67,17 +67,18 @@ const ProjectCard: React.FC<{ project: Project; index: number }> = ({ project, i
               border: `1px solid ${project.color}`,
               background: 'transparent',
               color: 'white',
-              cursor: 'none'
+              cursor: 'inherit',
+              width: 'max-content'
             }}
           >
             View Case Study
           </button>
         </div>
-        <div style={{ position: 'relative' }}>
+        <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
           <motion.div 
             style={{ 
               width: '100%', 
-              height: '400px', 
+              height: 'clamp(200px, 40vh, 400px)', 
               background: `linear-gradient(135deg, ${project.color}33, transparent)`,
               borderRadius: '1rem',
               border: `1px solid ${project.color}33`,
@@ -86,7 +87,7 @@ const ProjectCard: React.FC<{ project: Project; index: number }> = ({ project, i
               justifyContent: 'center'
             }}
           >
-            <span style={{ fontSize: '5rem', filter: 'grayscale(1)', opacity: 0.2 }}>0{index + 1}</span>
+            <span style={{ fontSize: 'clamp(3rem, 10vw, 5rem)', filter: 'grayscale(1)', opacity: 0.2 }}>0{index + 1}</span>
           </motion.div>
         </div>
       </motion.div>

@@ -89,6 +89,19 @@ h1, h2, h3, h4, h5, h6 {
   letter-spacing: -0.02em;
 }
 
+@media (max-width: 768px) {
+  html {
+    cursor: auto; /* Disable custom cursor on touch devices for better UX */
+  }
+}
+
+.container {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 5%;
+}
+
 a {
   color: inherit;
   text-decoration: none;

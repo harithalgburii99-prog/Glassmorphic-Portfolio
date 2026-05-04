@@ -9,21 +9,22 @@ const Navbar: React.FC = () => {
       className="glass"
       style={{
         position: 'fixed',
-        top: '1.5rem',
+        top: '1rem',
         left: '50%',
         transform: 'translateX(-50%)',
-        width: 'auto',
-        maxWidth: '90%',
-        padding: '0.75rem 2rem',
+        width: 'max-content',
+        maxWidth: '95%',
+        padding: '0.6rem 1.5rem',
         display: 'flex',
-        gap: '2rem',
+        gap: '1rem',
         alignItems: 'center',
         zIndex: 1000,
         borderRadius: '2rem',
+        fontSize: '0.9rem'
       }}
     >
       <a href="#hero" className="glass-hover" style={{ fontWeight: 600 }}>Home</a>
-      <a href="#projects" className="glass-hover">Projects</a>
+      <a href="#projects" className="glass-hover">Work</a>
       <a href="#about" className="glass-hover">About</a>
       <a href="#contact" className="glass-hover">Contact</a>
     </motion.nav>

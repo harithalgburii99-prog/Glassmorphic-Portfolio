@@ -21,11 +21,11 @@ const Hero: React.FC = () => {
     <section 
       id="hero"
       style={{
-        height: '100vh',
+        minHeight: '100vh',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
-        padding: '0 10%',
+        padding: '10vh 5%',
         position: 'relative',
         overflow: 'hidden',
       }}
@@ -42,8 +42,8 @@ const Hero: React.FC = () => {
           position: 'absolute',
           top: '20%',
           right: '10%',
-          width: '300px',
-          height: '300px',
+          width: 'max(200px, 20vw)',
+          height: 'max(200px, 20vw)',
           background: 'linear-gradient(45deg, var(--primary-color), transparent)',
           filter: 'blur(80px)',
           opacity: 0.2,
@@ -55,6 +55,7 @@ const Hero: React.FC = () => {
         variants={container}
         initial="hidden"
         animate="show"
+        style={{ maxWidth: '1200px', margin: '0 auto', width: '100%' }}
       >
         <motion.p 
           variants={item}
@@ -63,7 +64,8 @@ const Hero: React.FC = () => {
             fontWeight: 600, 
             letterSpacing: '0.1em', 
             textTransform: 'uppercase',
-            marginBottom: '1rem' 
+            marginBottom: '1rem',
+            fontSize: 'clamp(0.8rem, 2vw, 1rem)'
           }}
         >
           Full-Stack Web Developer
@@ -72,7 +74,7 @@ const Hero: React.FC = () => {
         <motion.h1 
           variants={item}
           style={{ 
-            fontSize: 'clamp(3rem, 10vw, 8rem)', 
+            fontSize: 'clamp(2.5rem, 12vw, 8rem)', 
             lineHeight: 0.9, 
             marginBottom: '2rem' 
           }}
@@ -82,8 +84,8 @@ const Hero: React.FC = () => {
           EXPERIENCES
         </motion.h1>
 
-        <motion.div variants={item} className="glass" style={{ padding: '1.5rem 2.5rem', width: 'fit-content' }}>
-          <p style={{ maxWidth: '500px', fontSize: '1.1rem', opacity: 0.8 }}>
+        <motion.div variants={item} className="glass" style={{ padding: '1.5rem 2rem', width: 'fit-content', maxWidth: '100%' }}>
+          <p style={{ maxWidth: '500px', fontSize: 'clamp(1rem, 2.5vw, 1.2rem)', opacity: 0.8 }}>
             Specializing in high-performance web applications with a focus on immersive UI/UX and scalable architecture.
           </p>
         </motion.div>

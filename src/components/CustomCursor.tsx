@@ -40,7 +40,7 @@ const CustomCursor: React.FC = () => {
   }, [cursorX, cursorY]);
 
   return (
-    <>
+    <div style={{ display: typeof window !== 'undefined' && window.innerWidth < 768 ? 'none' : 'block' }}>
       <motion.div
         style={{
           position: 'fixed',
@@ -72,7 +72,7 @@ const CustomCursor: React.FC = () => {
           zIndex: 10001,
         }}
       />
-    </>
+    </div>
   );
 };
 
